@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchGitHubProfile } from '@/services/github';
-import { generateRoastStream } from '@/services/ai';
+import { fetchGitHubProfile } from '@/src/app/services/github';
+import { generateRoastStream } from '@/src/app/services/ai';
 
 // We use the Edge runtime for blazing-fast, serverless streaming support
 export const runtime = 'edge';
