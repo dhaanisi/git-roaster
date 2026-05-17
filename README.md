@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🔥 git-roaster
 
-## Getting Started
+> **"Your code shame, publicly archived."**
 
-First, run the development server:
+An AI-powered web application that analyzes public GitHub profiles and uses advanced LLMs to brutally roast code life choices, repository names, and tech stack configurations. 
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Built with **Next.js (App Router)**, **TypeScript**, and **Tailwind CSS**, the app utilizes **Next.js Edge Runtime** to stream custom burns directly to the user's screen in real time.
+
+---
+
+## ✨ Features
+
+- **Real-Time Text Streaming:** Leverages serverless Web Streams to pipe the AI's response token-by-token for a dynamic, retro-terminal typing effect.
+- **Granular Tech Stack Auditing:** Automatically parses repositories to identify dominant languages, judge empty descriptions, and evaluate public repository metrics.
+- **Variable Intensity Tiers:** Let users pick their preferred burn level using adjustable input chips:
+  - 🌶 **Mild:** Sarcastic but gentle critiques.
+  - 🔥 **Brutal:** Heavy developer-centric roasts.
+  - 💀 **Savage:** Unforgiving, unfiltered reality checks.
+- **Dynamic Scoring Display:** Generates a custom evaluation heat bar and numerical code rating system.
+- **Social Sharing Integrations:** Quick one-click native clipboard copy and Twitter/X Web Intent triggers for organic viral sharing.
+
+---
+
+## 🛠 Tech Stack
+
+- **Framework:** Next.js 15+ (App Router, Edge Runtime)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS & Styled-JSX modules
+- **AI Core:** Google Gen AI SDK (`gemini-2.5-flash`)
+- **Data Ingestion:** GitHub REST API
+
+---
+
+## 🏗 Directory Architecture
+
+```text
+git-roaster/
+├── src/
+│   └── app/
+│       ├── api/
+│       │   └── roast/
+│       │       └── route.ts  # Edge API Endpoint (Fetches data & orchestrates stream)
+│       ├── globals.css       # Core styling setup
+│       ├── layout.tsx        # HTML structure & baseline font configurations
+│       └── page.tsx          # Main user dashboard interface & stream consumption
+├── components/               # Custom presentation components and inline SVGs
+├── services/                 # Layered business logic
+│   ├── github.ts             # GitHub profile and repository normalization engine
+│   └── ai.ts                 # Prompt engineering and Gemini stream initialization
+├── public/                   # Static application assets
+├── .env.local                # Local developer credentials (git-ignored)
+└── package.json              # Project dependencies
 ```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Clone the respository
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+git clone [https://github.com/dhaanisi/git-roaster.git] (https://github.com/dhaanisi/git-roaster.git)
+cd git-roaster
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Install dependencies
+npm install
+---
 
-## Learn More
+# GitHub Personal Access Token (Classic) to prevent API rate-limiting
+GITHUB_PAT=your_github_personal_access_token
 
-To learn more about Next.js, take a look at the following resources:
+# Google AI Studio Gemini API Key
+GEMINI_API_KEY=your_gemini_api_key
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Run the development server
+npm run dev
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
