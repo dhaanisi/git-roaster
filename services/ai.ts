@@ -21,6 +21,7 @@ export async function generateRoastStream(githubData: CleanedGitHubData) {
     - Keep it entertaining, funny, and developer-centric (slang like 'spaghetti code', 'LGTM', 'stack overflow' is welcome).
     - Do not be abusive or use hate speech, but make it sting slightly.
     - Output your response in clean Markdown layout (use bullet points or short paragraphs).
+    - **CRITICAL:** Strictly limit your entire response to 50 words or less. Make it extremely brief, fast, and punchy.
   `;
 
     // Format the structured user data into a clean text string for the model

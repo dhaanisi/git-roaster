@@ -312,9 +312,9 @@ export default function Home() {
       <style jsx>{`
         /* Layout */
         .page {
-          max-width: 520px;
+          max-width: 680px;
           margin: 0 auto;
-          padding: 64px 20px 80px;
+          padding: 64px 24px 80px;
           font-family: var(--font-geist), system-ui, sans-serif;
           -webkit-font-smoothing: antialiased;
         }
@@ -444,18 +444,24 @@ export default function Home() {
         /* Roast card */
         .roast-card {
           background:#141414; border:1px solid #222;
-          border-radius:12px; padding:22px; margin-bottom:12px;
+          border-radius:16px; padding:32px; margin-bottom:16px;
           animation: up 0.4s ease;
         }
-        .roast-meta { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
-        .roast-label { font-size:11px; font-weight:500; color:#444; text-transform:uppercase; letter-spacing:0.5px; }
+        .roast-meta { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; }
+        .roast-label { font-size:11px; font-weight:500; color:#555; text-transform:uppercase; letter-spacing:1px; }
         .score-pill {
           background:#ff4d0015; border:1px solid #ff4d0025;
           color:#ff7733; border-radius:100px;
-          font-size:11px; font-weight:600; padding:2px 9px;
+          font-size:12px; font-weight:600; padding:4px 12px;
           font-family:var(--font-geist-mono),monospace;
         }
-        .roast-body { font-size:14px; line-height:1.8; color:#aaa; whitespace: pre-wrap; }
+        .roast-body { 
+          font-size:15px; 
+          line-height:2.0; 
+          color:#c8c8c8; 
+          white-space: pre-wrap;
+          letter-spacing: -0.1px;
+        }
         .heat-row { display:flex; align-items:center; gap:10px; margin-top:18px; padding-top:16px; border-top:1px solid #222; }
         .heat-track { flex:1; height:3px; background:#222; border-radius:2px; overflow:hidden; }
         .heat-fill { height:100%; background:linear-gradient(90deg,#ffd700,#ff7733,#ff4d00); border-radius:2px; transition:width 1.2s cubic-bezier(0.22,1,0.36,1); }
