@@ -63,14 +63,4 @@ cd git-roaster
 npm install
 ---
 
-# GitHub Personal Access Token (Classic) to prevent API rate-limiting
-GITHUB_PAT=your_github_personal_access_token
-
-# Google AI Studio Gemini API Key
-GEMINI_API_KEY=your_gemini_api_key
-
----
-
-Run the development server
-npm run dev
 
