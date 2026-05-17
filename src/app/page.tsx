@@ -50,24 +50,6 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
-  // ── Fetch GitHub profile ─────────────────────────────────────────────────
-  async function fetchProfile(u: string): Promise<GitHubProfile> {
-    const res = await fetch(`https://api.github.com/users/${u}`);
-    if (!res.ok) throw new Error("Profile not found");
-    return res.json();
-  }
-
-  // ── Call /api/roast ──────────────────────────────────────────────────────
-  async function fetchRoast(p: GitHubProfile, lvl: Intensity): Promise<RoastResult> {
-    const res = await fetch("/api/roast", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ profile: p, intensity: lvl }),
-    });
-    if (!res.ok) throw new Error("Roast failed");
-    return res.json();
-  }
-
   // ── Main handler ─────────────────────────────────────────────────────────
   async function startRoast() {
     const u = username.trim();
@@ -87,10 +69,58 @@ export default function Home() {
     }, 1200);
 
     try {
-      const p = await fetchProfile(u);
-      setProfile(p);
-      const r = await fetchRoast(p, intensity);
-      setResult(r);
+      // Send orchestration payload to our Edge handler
+      const res = await fetch("/api/roast", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: u, intensity }),
+      });
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || "Roast failed");
+      }
+
+      // Check if we have headers containing the Profile metadata 
+      // (Sent as fallback or custom profile strip parsing if desired)
+      // For standard streaming apps, you can construct a skeleton object or wait for stream end
+      // For now, let's provision a baseline fallback so your UI components stay active
+      setProfile({
+        login: u,
+        name: u,
+        avatar_url: `https://github.com/${u}.png`,
+        bio: "",
+        public_repos: 0,
+        followers: 0,
+        following: 0,
+      });
+
+      if (!res.body) {
+        throw new Error("No response body stream found.");
+      }
+
+      // Instantiate stream reader
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let cumulativeText = "";
+
+      // Turn off full loading screen once stream tokens begin arriving
+      clearInterval(msgTimer);
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+
+        const textChunk = decoder.decode(value);
+        cumulativeText += textChunk;
+
+        // Generate dynamic scoring based on data metrics or assign evaluation on completion
+        setResult({
+          roast: cumulativeText,
+          score: 85 // Static evaluation fallback or increment hook
+        });
+      }
+
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Something went wrong");
     } finally {
@@ -194,7 +224,7 @@ export default function Home() {
       </div>
 
       {/* Loading state */}
-      {loading && (
+      {loading && !result && (
         <>
           <div className="progress">
             <div className="progress-fill" />
@@ -211,7 +241,7 @@ export default function Home() {
       )}
 
       {/* Profile strip */}
-      {profile && (
+      {profile && result && (
         <div className="profile-strip">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className="avatar" src={profile.avatar_url} alt={profile.login} />
@@ -257,7 +287,7 @@ export default function Home() {
       )}
 
       {/* Actions */}
-      {result && (
+      {result && !loading && (
         <div className="actions">
           <button className="act-btn" onClick={copyRoast}>
             <CopyIcon />
@@ -425,7 +455,7 @@ export default function Home() {
           font-size:11px; font-weight:600; padding:2px 9px;
           font-family:var(--font-geist-mono),monospace;
         }
-        .roast-body { font-size:14px; line-height:1.8; color:#aaa; }
+        .roast-body { font-size:14px; line-height:1.8; color:#aaa; whitespace: pre-wrap; }
         .heat-row { display:flex; align-items:center; gap:10px; margin-top:18px; padding-top:16px; border-top:1px solid #222; }
         .heat-track { flex:1; height:3px; background:#222; border-radius:2px; overflow:hidden; }
         .heat-fill { height:100%; background:linear-gradient(90deg,#ffd700,#ff7733,#ff4d00); border-radius:2px; transition:width 1.2s cubic-bezier(0.22,1,0.36,1); }

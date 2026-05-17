@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       async start(controller) {
         try {
           for await (const chunk of aiStream) {
-            const text = chunk.text();
+            const text = chunk.text;
             if (text) {
               controller.enqueue(encoder.encode(text));
             }
