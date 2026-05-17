@@ -53,14 +53,6 @@ git-roaster/
 ```
 ---
 
-## Clone the respository
 
-git clone [https://github.com/dhaanisi/git-roaster.git] (https://github.com/dhaanisi/git-roaster.git)
-cd git-roaster
----
-
-## Install dependencies
-npm install
----
 
 
